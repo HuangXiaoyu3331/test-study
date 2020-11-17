@@ -1,0 +1,573 @@
+{
+	"info": {
+		"_postman_id": "a0b35bb0-6caf-46a2-80b6-3226a0755de9",
+		"name": "wiremock",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "stubbing",
+			"item": [
+				{
+					"name": "get all registered stub mappings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/__admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Getting all currently registered stub mappings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/__admin/mappings?limit=10&offset=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"mappings"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						},
+						"description": "All stub mappings can be fetched in Java by calling `WireMock.listAllStubMappings()`.\n\nTo fetch them via the HTTP API send a `GET` to `http://<host>:<port>/__admin/mappings`.\n\nOptionally limit and offset parameters can be specified to constrain the set returned e.g. `GET` `http://localhost:8080/__admin/mappings?limit=10&offset=50`"
+					},
+					"response": []
+				},
+				{
+					"name": "file serving",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/index.html",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"index.html"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create stub",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"request\": {\n        \"method\": \"GET\",\n        \"url\": \"/some/thing\"\n    },\n    \"response\": {\n        \"status\": 200,\n        \"body\": \"Hello world!\",\n        \"headers\": {\n            \"Content-Type\": \"text/plain\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/__admin/mappings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"mappings"
+							]
+						},
+						"description": "To create the stub described above via the JSON API, the following document can either be posted to `http://<host>:<port>/__admin/mappings` or placed in a file with a `.json` extension under the `mappings` directory"
+					},
+					"response": []
+				},
+				{
+					"name": "remove stub",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/__admin/mappings/70ca3812-ce34-4081-8f47-d94cbc31b116",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"mappings",
+								"70ca3812-ce34-4081-8f47-d94cbc31b116"
+							]
+						},
+						"description": "stub mappings can be delte via HTTP API by issuing a DELETE to `http://<host>:<port>/__admin/mappings/{id}` where id is the UUID of the stub mapping, found in its id field."
+					},
+					"response": []
+				},
+				{
+					"name": "reset(also delete request log)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/__admin/reset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"reset"
+							]
+						},
+						"description": "The WireMock server can be reset at any time, removing all stub mappings and deleting the request log. If you’re using either of the JUnit rules this will happen automatically at the start of every test case. However you can do it yourself via a call to WireMock.reset() in Java or sending a `POST` request with an empty body to `http://<host>:<port>/__admin/reset`."
+					},
+					"response": []
+				},
+				{
+					"name": "reset(delete mappings file but not delete request log)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/__admin/mappings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"mappings"
+							]
+						},
+						"description": "To reset just the stub mappings leaving the request log intact send a `DELETE` to `http://<host>:<port>/__admin/mappings`"
+					},
+					"response": []
+				},
+				{
+					"name": "reset to defult",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/__admin/mappings/reset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"mappings",
+								"reset"
+							]
+						},
+						"description": "If you’ve created some file based stub mappings to be loaded at startup and you don’t want these to disappear when you do a reset you can call `WireMock.resetToDefault()` instead, or post an empty request to `http://<host>:<port>/__admin/mappings/reset`"
+					},
+					"response": []
+				},
+				{
+					"name": "get stub by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/__admin/mappings/65c4688d-198e-4069-ac9a-a3960f7e5e6e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"mappings",
+								"65c4688d-198e-4069-ac9a-a3960f7e5e6e"
+							]
+						},
+						"description": "A single stub mapping can be retrieved by ID in Java by calling `WireMock.getSingleStubMapping(id)` where `id` is the UUID of the stub mapping.\n\nVia the HTTP client a mapping can be retrieved by sending a `GET` to `http://<host>:<port>/__admin/mappings/{id}`."
+					},
+					"response": []
+				},
+				{
+					"name": "bluk import stub",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mappings\": [\n    {\n      \"request\": {\n        \"method\": \"GET\",\n        \"url\": \"/one\"\n      },\n      \"response\": {\n        \"status\": 200\n      }\n    },\n    {\n      \"id\": \"8c5db8b0-2db4-4ad7-a99f-38c9b00da3f7\",\n      \"request\": {\n        \"url\": \"/two\"\n      },\n      \"response\": {\n        \"status\": 200,\n        \"body\": \"Body content\"\n      }\n    }\n  ],\n\n  \"importOptions\": {\n    \"duplicatePolicy\": \"IGNORE\",\n    \"deleteAllNotInImport\": true\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/__admin/mappings/import",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"mappings",
+								"import"
+							]
+						},
+						"description": "Multiple stubs can be imported in one call\n```java\nWireMock.importStubs(stubImport()\n    .stub(get(\"/one\").willReturn(ok()))\n    .stub(post(\"/two\").willReturn(ok(\"Body content\")))\n    .stub(put(\"/three\").willReturn(ok()))\n    .ignoreExisting()\n    .deleteAllExistingStubsNotInImport());\n```\n\nVia the JSON API, `POST` the to `/__admin/mappings/import`\n\n\nExisting stubs policy\n\nBy default, if a stub in an import already exists (has an ID of a stub already loaded), then the existing stub will be overwritten. This can be changed by setting duplicatePolicy in the JSON to `IGNORE` or calling `ignoreExisting()` on the Java builder.\n\nReplacing all stubs with the import\n\nIf you want to ensure that the only stubs loaded after the import has completed are the ones it contains, you can set `\"deleteAllNotInImport\": true` in the JSON or call `deleteAllExistingStubsNotInImport()` on the Java builder."
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "verifying",
+			"item": [
+				{
+					"name": "count",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"method\": \"POST\",\n    \"url\": \"/resource/to/count\",\n    \"headers\": {\n        \"Content-Type\": {\n            \"matches\": \".*/xml\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/__admin/requests/count",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"requests",
+								"count"
+							]
+						},
+						"description": "requesting a count of the number of requests matching the specified criteria (and in fact this is what the Java method does under the hood)."
+					},
+					"response": []
+				},
+				{
+					"name": "getting all request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/__admin/requests?since=2016-06-06T12:00:00Z&limit=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"requests"
+							],
+							"query": [
+								{
+									"key": "since",
+									"value": "2016-06-06T12:00:00Z"
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						},
+						"description": "All requests received by WireMock since the last reset can be fetched, along with additional data about whether the request was matched by a stub mapping and the resulting response definition.\nIn Java:\n```Java\nList<ServeEvent> allServeEvents = getAllServeEvents();\n```\nAnd via the HTTP API by sending a `GET` to `http://<host>:<port>/__admin/requests`\n\nOptionally the results can be filtered to those occuring after a specififed (ISO8601) date-time. Also, the result set can optionally be limited in size e.g. to return the most recent three results after the 7th of June 2016 12pm send: `GET` `http://localhost:8080/__admin/requests?since=2016-06-06T12:00:00Z&limit=3`"
+					},
+					"response": []
+				},
+				{
+					"name": "Criteria queries",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"method\": \"GET\",\n    \"url\": \"/hello\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/__admin/requests/find",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"requests",
+								"find"
+							]
+						},
+						"description": "The request journal can also be queried, taking a request pattern as the filter criteria. In Java:\n```Java\nList<LoggedRequest> requests = findAll(putRequestedFor(urlMatching(\"/api/.*\")));\n```\n\nAnd in JSON + HTTP by posting a criteria document (of the same form as for request counting) to `http://<host>:<port>/__admin/requests/find`, which will return a response like this"
+					},
+					"response": []
+				},
+				{
+					"name": "remove item from the journal by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/__admin/requests/ec65e8bf-fbb6-4cf2-ad0c-259890d63343",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"requests",
+								"ec65e8bf-fbb6-4cf2-ad0c-259890d63343"
+							]
+						},
+						"description": "An individual journal event can be removed via the Java API\n```java\nremoveServeEvent(id);\n```\nOr via the HTTP API by issuing a `DELETE` to `http://<host>:<port>/__admin/requests/{id}`\n\nnote: `id` is request id,not a stub id"
+					},
+					"response": []
+				},
+				{
+					"name": "remove item from the journal by criteria",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"method\": \"GET\",\n    \"urlPattern\": \"/hello\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/__admin/requests/remove",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"requests",
+								"remove"
+							]
+						},
+						"description": "Events can also be removed from the request journal by criteria (in the same manner as for finding them described in Criteria queries).\nUsing the Java DSL:\n```java\nremoveServeEvents(putRequestedFor(urlMatching(\"/api/.*\")\n    .withHeader(\"X-Trace-Id\", equalTo(\"123\"))));\n```\nOr via the HTTP API:\n```\nPOST http://<host>:<port>/__admin/requests/remove\n\n{\n    \"method\": \"PUT\",\n    \"urlPattern\": \"/api/.*\",\n    \"headers\": {\n        \"X-Trace-Id\": {\n            \"equalTo\": \"123\"\n        }\n    }\n}\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "remove item form the journal by metadata",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"matchesJsonPath\" : {\n      \"expression\" : \"$.tags[0]\",\n      \"equalTo\" : \"test-57\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/__admin/requests/remove-by-metadata",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"requests",
+								"remove-by-metadata"
+							]
+						},
+						"description": "In situations where it isn’t possible to precisely identify log events for removal from request attributes alone, the metadata associated with stubs matching requests can be used for selection. For instance, your test code might create stubs tagged with test case identifiers, then use these to clean up events created by the test:\n```java\nstubFor(get(\"/api/dosomething/123\")\n    .withMetadata(metadata()\n        .list(\"tags\", \"test-57\")\n    ));\n\ntestClient.get(\"/api/dosomething/123\");\n\nList<ServeEvent> removedServeEvents = removeEventsByStubMetadata(matchingJsonPath(\"$.tags[0]\", equalTo(\"test-57\")));\n```\n```\nPOST /__admin/requests/remove-by-metadata\n\n{\n    \"matchesJsonPath\" : {\n      \"expression\" : \"$.tags[0]\",\n      \"equalTo\" : \"test-57\"\n    }\n}\n```\nFor more info about stub metadata see <a href=\"http://wiremock.org/docs/stub-metadata/\">Stub Metadata</a>"
+					},
+					"response": []
+				},
+				{
+					"name": "reset request journal",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/__admin/requests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"requests"
+							]
+						},
+						"description": "The request log can be reset at any time. If you’re using either of the JUnit rules this will happen automatically at the start of every test case. However you can do it yourself via a call to `WireMock.resetAllRequests()` in Java or sending a `DELETE` request to `http://<host>:<port>/__admin/requests`"
+					},
+					"response": []
+				},
+				{
+					"name": "finding unmatched requesets",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/__admin/requests/unmatched",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"requests",
+								"unmatched"
+							]
+						},
+						"description": "To find all requests which were received but not matched by a configured stub (i.e. received the default 404 response) do the following in Java:\n```Java\nList<LoggedRequest> unmatched = WireMock.findUnmatchedRequests();\n```\nTo find unmatched requests via the HTTP API, make a GET request to`/__admin/requests/unmatched`\n\nsetp:\n    1. call unmatched endpoint,like `http://localhost:8080/abcdefg\n    2. call `__admin/requests/unmatched` to finding unmatched requests, will find the `/abcdefg` request that you called in above"
+					},
+					"response": []
+				},
+				{
+					"name": "Near misses(request)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"url\": \"/hello\",\n  \"absoluteUrl\": \"http://localhost:8080/hello\",\n  \"method\": \"GET\",\n  \"clientIp\": \"0:0:0:0:0:0:0:1\",\n  \"headers\": {\n    \"User-Agent\": \"curl/7.30.0\",\n    \"Accept\": \"*/*\",\n    \"Host\": \"localhost:8080\"\n  },\n  \"cookies\": {},\n  \"browserProxyRequest\": false,\n  \"loggedDate\": 1467402464520,\n  \"bodyAsBase64\": \"\",\n  \"body\": \"\",\n  \"loggedDateString\": \"2016-07-01T19:47:44Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/__admin/near-misses/request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"near-misses",
+								"request"
+							]
+						},
+						"description": "“Near Misses” are enabled by the new “distance” concept added to the matching system. A near miss is essentially a pairing of a request and request pattern that are not an exact match for each other, that can be ranked by distance. This is useful when debugging test failures as it is quite common for a request not to be matched to a stub due to a minor difference e.g. a miscapitalised character.\n\nNear misses can either represent the closest stubs to a given request, or the closest requests to a given request pattern depending on the type of query submitted.\n\nTo find near misses representing stub mappings closest to the specified request in Java:\n```\nList<NearMiss> nearMisses = WireMock.findNearMissesFor(myLoggedRequest);\n```\nTo do the same via the HTTP API:\n```\nPOST /__admin/near-misses/request\n\n{\n  \"url\": \"/actual\",\n  \"absoluteUrl\": \"http://localhost:8080/actual\",\n  \"method\": \"GET\",\n  \"clientIp\": \"0:0:0:0:0:0:0:1\",\n  \"headers\": {\n    \"User-Agent\": \"curl/7.30.0\",\n    \"Accept\": \"*/*\",\n    \"Host\": \"localhost:8080\"\n  },\n  \"cookies\": {},\n  \"browserProxyRequest\": false,\n  \"loggedDate\": 1467402464520,\n  \"bodyAsBase64\": \"\",\n  \"body\": \"\",\n  \"loggedDateString\": \"2016-07-01T19:47:44Z\"\n}\n```\nwill return a response like:\n```\n{\n  \"nearMisses\": [\n    {\n      \"request\": {\n        \"url\": \"/actual\",\n        \"absoluteUrl\": \"http://localhost:8080/nomatch\",\n        \"method\": \"GET\",\n        \"clientIp\": \"0:0:0:0:0:0:0:1\",\n        \"headers\": {\n          \"User-Agent\": \"curl/7.30.0\",\n          \"Accept\": \"*/*\",\n          \"Host\": \"localhost:8080\"\n        },\n        \"cookies\": {},\n        \"browserProxyRequest\": false,\n        \"loggedDate\": 1467402464520,\n        \"bodyAsBase64\": \"\",\n        \"body\": \"\",\n        \"loggedDateString\": \"2016-07-01T19:47:44Z\"\n      },\n      \"stubMapping\": {\n        \"uuid\": \"42aedcf2-1f8d-4009-ac7b-9870e4ab2316\",\n        \"request\": {\n          \"url\": \"/expected\",\n          \"method\": \"GET\"\n        },\n        \"response\": {\n          \"status\": 200\n        }\n      },\n      \"matchResult\": {\n        \"distance\": 0.12962962962962962\n      }\n    }\n  ]\n}\n```"
+					},
+					"response": []
+				},
+				{
+					"name": "Near misses(request pattern)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"url\": \"/hello\",\n    \"method\": \"GET\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/__admin/near-misses/request-pattern",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"__admin",
+								"near-misses",
+								"request-pattern"
+							]
+						},
+						"description": "To find near misses representing stub mappings closest to the specified request in Java:\n```Java\nList<NearMiss> nearMisses = WireMock.findNearMissesFor(\n    getRequestedFor(urlEqualTo(\"/thing-url\"))\n        .withRequestBody(containing(\"thing\"))\n);\n```\nThe equivalent via the HTTP API:\n```\nPOST /__admin/near-misses/request-pattern\n\n{\n    \"url\": \"/almostmatch\",\n    \"method\": \"GET\"\n}\n```\nwill return a response like:\n```\n{\n  \"nearMisses\": [\n    {\n      \"request\": {\n        \"url\": \"/nomatch\",\n        \"absoluteUrl\": \"http://localhost:8080/nomatch\",\n        \"method\": \"GET\",\n        \"clientIp\": \"0:0:0:0:0:0:0:1\",\n        \"headers\": {\n          \"User-Agent\": \"curl/7.30.0\",\n          \"Accept\": \"*/*\",\n          \"Host\": \"localhost:8080\"\n        },\n        \"cookies\": {},\n        \"browserProxyRequest\": false,\n        \"loggedDate\": 1467402464520,\n        \"bodyAsBase64\": \"\",\n        \"body\": \"\",\n        \"loggedDateString\": \"2016-07-01T19:47:44Z\"\n      },\n      \"requestPattern\": {\n        \"url\": \"/almostmatch\",\n        \"method\": \"GET\"\n      },\n      \"matchResult\": {\n        \"distance\": 0.06944444444444445\n      }\n    }\n  ]\n}\n```\nAs a convenience you can also find the top 3 near misses for every unmatched request:\n```Java\nList<NearMiss> nearMisses = WireMock.findNearMissesForAllUnmatched();\n```\nTo do the same via the HTTP API, issue a `GET` to `/__admin/requests/unmatched/near-misses`, which will produce output of the same form as for the query for near misses by request."
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "call",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/hello",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"hello"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

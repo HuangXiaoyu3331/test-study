@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/parameter"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "jsonBody": {
+      "result": "success"
+    }
+  }
+}

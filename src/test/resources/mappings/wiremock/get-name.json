@@ -1,0 +1,11 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "url": "/name"
+  },
+  "response": {
+    "status": 200,
+    "body": "hxy"
+  }
+}
